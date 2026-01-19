@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Tenant;
+namespace App\Http\Controllers\Central;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -10,7 +10,10 @@ class AuthController extends Controller
 {
     public function showLoginForm()
     {
-        return view('tenant.auth.login');
+        if (Auth::check()) {
+            return redirect()->route('tenants.index');
+        }
+        return view('central.auth.login');
     }
 
     public function login(Request $request)
@@ -20,13 +23,13 @@ class AuthController extends Controller
             'password' => ['required'],
         ]);
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
-            return redirect()->route('tenant.admin.products.index');
+            return redirect()->route('tenants.index');
         }
 
         return back()->withErrors([
-            'email' => 'Las credenciales no coinciden con nuestros registros.',
+            'email' => 'Las credenciales proporcionadas no coinciden con nuestros registros.',
         ])->onlyInput('email');
     }
 
@@ -35,6 +38,6 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect()->route('tenant.home');
+        return redirect()->route('login');
     }
 }

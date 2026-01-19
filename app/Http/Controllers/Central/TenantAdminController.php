@@ -16,6 +16,10 @@ class TenantAdminController extends Controller
         $users = $tenant->run(function () {
             return User::all();
         });
+
+        // Evitar que los modelos intenten usar la conexión 'tenant' fuera del contexto de tenancy
+        $users->each->setConnection(config('database.default'));
+
         return view('central.tenants.admins.index', compact('tenant', 'users'));
     }
 
@@ -57,6 +61,10 @@ class TenantAdminController extends Controller
         $admin = $tenant->run(function () use ($userId) {
             return User::findOrFail($userId);
         });
+
+        // Evitar que el modelo intente usar la conexión 'tenant' fuera del contexto de tenancy
+        $admin->setConnection(config('database.default'));
+
         return view('central.tenants.admins.edit', compact('tenant', 'admin'));
     }
 

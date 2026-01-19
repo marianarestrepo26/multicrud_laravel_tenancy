@@ -34,7 +34,6 @@
                 </div>
             @empty
                 <div class="col-12 text-center py-5">
-                    <div class="display-1 text-muted mb-3">📦</div>
                     <h3>No hay productos disponibles por ahora.</h3>
                     <p>Vuelve pronto para ver nuestras novedades.</p>
                 </div>

@@ -11,7 +11,17 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        $middleware->redirectTo(
+            guests: '/login',
+            users: function ($request) {
+                // Si hay un tenant inicializado, ir al panel del tenant
+                if (function_exists('tenant') && tenant('id')) {
+                    return '/admin';
+                }
+                // Si no, ir al panel central
+                return '/tenants';
+            }
+        );
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

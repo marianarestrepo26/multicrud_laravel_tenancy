@@ -43,6 +43,13 @@ return [
             'transaction_mode' => 'DEFERRED',
         ],
 
+        'tenant' => [
+            'driver' => 'sqlite',
+            'database' => null, // Will be replaced by Stancl/Tenancy
+            'prefix' => '',
+            'foreign_key_constraints' => true,
+        ],
+
         'mysql' => [
             'driver' => 'mysql',
             'url' => env('DB_URL'),

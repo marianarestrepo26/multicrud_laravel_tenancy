@@ -31,8 +31,10 @@ Route::middleware([
     Route::get('/', [PublicController::class, 'index'])->name('tenant.home');
 
     // Authentication
-    Route::get('login', [AuthController::class, 'showLoginForm'])->name('login'); // Name 'login' is important for auth middleware
-    Route::post('login', [AuthController::class, 'login'])->name('tenant.login.submit');
+    Route::middleware('guest')->group(function () {
+        Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
+        Route::post('login', [AuthController::class, 'login'])->name('tenant.login.submit');
+    });
     Route::post('logout', [AuthController::class, 'logout'])->name('tenant.logout');
 
     // Tenant Admin Panel
